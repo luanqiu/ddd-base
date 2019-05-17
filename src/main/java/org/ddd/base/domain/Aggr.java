@@ -2,7 +2,7 @@ package org.ddd.base.domain;
 
 /**
  * Aggr 聚合，命名：名词+Aggr
- * author  likongpeng
+ * author  wenhe
  * date 2019/4/5
  */
 public interface Aggr<T> extends DomainI {

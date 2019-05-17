@@ -3,10 +3,10 @@ package org.ddd.base.domain;
 import org.ddd.base.ApplicationContextHelper;
 
 /**
-* 仓库
-*author  likongpeng
-*date 2019/4/5
-*/
+ * 仓库
+ * author  wenhe
+ * date 2019/4/5
+ */
 @org.springframework.stereotype.Repository
 public interface Repository {
 

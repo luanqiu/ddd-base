@@ -1,9 +1,10 @@
 package org.ddd.base.domain;
+
 import org.springframework.stereotype.Component;
 
 /**
  * 领域接口
- * author  likongpeng
+ * author  wenhe
  * date 2019/4/5
  */
 @Component

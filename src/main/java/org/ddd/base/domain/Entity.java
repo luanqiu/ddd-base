@@ -2,7 +2,7 @@ package org.ddd.base.domain;
 
 /**
  * 实体，命名：名词+Entity
- * author  likongpeng
+ * author  wenhe
  * date 2019/4/5
  */
 public interface Entity<T> extends DomainI {
