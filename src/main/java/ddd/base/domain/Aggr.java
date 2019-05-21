@@ -1,4 +1,4 @@
-package org.ddd.base.domain;
+package ddd.base.domain;
 
 /**
  * Aggr 聚合，命名：名词+Aggr

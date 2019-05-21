@@ -1,4 +1,4 @@
-package org.ddd.base.domain;
+package ddd.base.domain;
 
 import java.io.Serializable;
 

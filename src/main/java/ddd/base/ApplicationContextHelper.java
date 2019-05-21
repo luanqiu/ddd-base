@@ -1,4 +1,4 @@
-package org.ddd.base;
+package ddd.base;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanDefinition;

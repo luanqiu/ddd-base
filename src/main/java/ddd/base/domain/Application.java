@@ -1,4 +1,4 @@
-package org.ddd.base.domain;
+package ddd.base.domain;
 
 /**
  * biz层通用接口，维持入口代码稳定

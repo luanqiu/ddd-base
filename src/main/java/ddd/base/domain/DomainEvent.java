@@ -1,4 +1,4 @@
-package org.ddd.base.domain;
+package ddd.base.domain;
 
 /**
  * event种类太多了，不想直接用，这里是领域事件
