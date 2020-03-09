@@ -1,13 +1,14 @@
 package ddd.base;
 
 import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.config.BeanDefinition;
-import org.springframework.beans.factory.support.BeanDefinitionBuilder;
-import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
+
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * ApplicationContextHelper
@@ -17,43 +18,69 @@ import org.springframework.stereotype.Component;
 @Component
 public class ApplicationContextHelper implements ApplicationContextAware {
 
-  private static ApplicationContext applicationContext;
-
-  private static BeanDefinitionRegistry beanDefinitonRegistry;
+  /**
+   * 主 ApplicationContext
+   */
+  private static ApplicationContext ROOT_APPLICATION_CONTEXT;
 
   /**
-   * 动态注册bean
+   * 单元化逻辑隔离的 ApplicationContext
    */
-  public synchronized static void registerBean(String beanName, Class clazz) {
-    if (null == beanName || null == clazz) {
-      throw new RuntimeException(beanName + "注册失败");
-    }
-    BeanDefinition beanDefinition = getBeanDefinitionBuilder(clazz).getBeanDefinition();
-    if (!beanDefinitonRegistry.containsBeanDefinition(beanName)) {
-      beanDefinitonRegistry.registerBeanDefinition(beanName, beanDefinition);
-    }
-  }
+  private static Map<String,ApplicationContext> UNITIZE_APPLICATION_CONTEXT_MAP = new ConcurrentHashMap<>();
 
-  private static BeanDefinitionBuilder getBeanDefinitionBuilder(Class clazz) {
-    return BeanDefinitionBuilder.genericBeanDefinition(clazz);
+  public static void registerApplication(String applicationKey, AnnotationConfigApplicationContext applicationContext) {
+    UNITIZE_APPLICATION_CONTEXT_MAP.put(applicationKey, applicationContext);
   }
 
   @Override
   public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-    ApplicationContextHelper.applicationContext = applicationContext;
-    ConfigurableApplicationContext
-        configurableApplicationContext =
-        (ConfigurableApplicationContext) applicationContext;
-    beanDefinitonRegistry =
-        (BeanDefinitionRegistry) configurableApplicationContext.getBeanFactory();
+    ApplicationContextHelper.ROOT_APPLICATION_CONTEXT = applicationContext;
   }
 
+  public static final ApplicationContext getRootApplication(){
+    return ROOT_APPLICATION_CONTEXT;
+  }
+
+  public static final ApplicationContext getApplication(String applicationKey){
+    return UNITIZE_APPLICATION_CONTEXT_MAP.get(applicationKey);
+  }
+
+  /**
+   * 判断是否从子容器拿，否则从父容器拿
+   * @param targetClz
+   * @param <T>
+   * @return
+   */
   public static <T> T getBean(Class<T> targetClz) {
+    // 如果 domainName 为空，直接从父容器拿
+    // 如果 domainName 不为空，先从子容器拿，找不到再从父容器拿
+    T t = null;
+    String domainName = ThreadContext.get(ThreadContext.DOMAIN_NAME);
+    ApplicationContext childApplicationContext = UNITIZE_APPLICATION_CONTEXT_MAP.get(domainName);
+    if(StringUtils.isEmpty(domainName) || null == childApplicationContext){
+      t = getSmallBean(targetClz, ROOT_APPLICATION_CONTEXT);
+      if(null != t){
+        return t;
+      }
+    }
+    t = getSmallBean(targetClz, childApplicationContext);
+    if(null != t){
+      return t;
+    }
+    t = getSmallBean(targetClz, ROOT_APPLICATION_CONTEXT);
+    if(null != t){
+      return t;
+    }
+    throw new RuntimeException("找不到 bean"+ targetClz.getSimpleName());
+  }
+
+  private static <T> T getSmallBean(Class<T> targetClz,ApplicationContext applicationContext){
     T beanInstance = null;
     //byType
     try {
       beanInstance = (T) applicationContext.getBean(targetClz);
     } catch (Exception e) {
+      throw e;
     }
     //byName
     if (beanInstance == null) {
@@ -61,11 +88,43 @@ public class ApplicationContextHelper implements ApplicationContextAware {
       simpleName = Character.toLowerCase(simpleName.charAt(0)) + simpleName.substring(1);
       beanInstance = (T) applicationContext.getBean(simpleName);
     }
-    if (beanInstance == null) {
-      throw new RuntimeException(
-          "beanName " + targetClz.getSimpleName()
-          + " can not be found in ApplicationContext (byType and byName)");
-    }
     return beanInstance;
   }
+
+  public static <T> T getBean(String beanName){
+    // 如果 domainName 为空，直接从父容器拿
+    // 如果 domainName 不为空，先从子容器拿，找不到再从父容器拿
+    T t = null;
+    String domainName = ThreadContext.get(ThreadContext.DOMAIN_NAME);
+    ApplicationContext childApplicationContext = UNITIZE_APPLICATION_CONTEXT_MAP.get(domainName);
+    if(StringUtils.isEmpty(domainName) || null == childApplicationContext){
+      t = getSmallBean(beanName, ROOT_APPLICATION_CONTEXT);
+      if(null != t){
+        return t;
+      }
+    }
+    t = getSmallBean(beanName, childApplicationContext);
+    if(null != t){
+      return t;
+    }
+    t = getSmallBean(beanName, ROOT_APPLICATION_CONTEXT);
+    if(null != t){
+      return t;
+    }
+    throw new RuntimeException("找不到 bean"+beanName);
+  }
+
+  private static <T> T getSmallBean(String beanName,ApplicationContext applicationContext){
+    if(null == applicationContext){
+      return null;
+    }
+    String simpleName = Character.toLowerCase(beanName.charAt(0)) + beanName.substring(1);
+    Object bean =  applicationContext.getBean(simpleName);
+    return (T) bean;
+  }
+
+
+
+
+
 }

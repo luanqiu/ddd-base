@@ -2,6 +2,7 @@ package ddd.base.domain;
 
 import ddd.base.ApplicationContextHelper;
 
+
 /**
  * DomainFactory
  * author  wenhe

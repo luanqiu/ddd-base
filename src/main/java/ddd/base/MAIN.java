@@ -1,5 +1,7 @@
 package ddd.base;
 
+import java.lang.reflect.Method;
+
 /**
  * MAIN
  * author  wenhe
@@ -7,7 +9,8 @@ package ddd.base;
  */
 public class MAIN {
 
-  public static void main(String[] args) {
+  public static void main(String[] args) throws NoSuchMethodException {
 
   }
+
 }
