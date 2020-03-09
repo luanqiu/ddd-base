@@ -13,7 +13,7 @@
     <groupId>com.github.luanqiu</groupId>
     <artifactId>ddd-base</artifactId>
     <packaging>jar</packaging>
-    <version>1.1-SNAPSHOT</version>
+    <version>2.0-RELEASE</version>
     <name>ddd-base</name>
     <url>www.wenhe.online</url>
 
