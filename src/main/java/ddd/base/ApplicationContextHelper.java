@@ -91,6 +91,28 @@ public class ApplicationContextHelper implements ApplicationContextAware {
     return beanInstance;
   }
 
+  public static <T> T getBean(String domainName,String beanName){
+    // 如果 domainName 为空，直接从父容器拿
+    // 如果 domainName 不为空，先从子容器拿，找不到再从父容器拿
+    T t = null;
+    ApplicationContext childApplicationContext = UNITIZE_APPLICATION_CONTEXT_MAP.get(domainName);
+    if(StringUtils.isEmpty(domainName) || null == childApplicationContext){
+      t = getSmallBean(beanName, ROOT_APPLICATION_CONTEXT);
+      if(null != t){
+        return t;
+      }
+    }
+    t = getSmallBean(beanName, childApplicationContext);
+    if(null != t){
+      return t;
+    }
+    t = getSmallBean(beanName, ROOT_APPLICATION_CONTEXT);
+    if(null != t){
+      return t;
+    }
+    throw new RuntimeException("找不到 bean"+beanName);
+  }
+
   public static <T> T getBean(String beanName){
     // 如果 domainName 为空，直接从父容器拿
     // 如果 domainName 不为空，先从子容器拿，找不到再从父容器拿
