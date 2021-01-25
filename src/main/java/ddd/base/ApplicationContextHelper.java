@@ -56,7 +56,7 @@ public class ApplicationContextHelper implements ApplicationContextAware {
     // 如果 domainName 不为空，先从子容器拿，找不到再从父容器拿
     T t = null;
     String domainName = ThreadContext.get(ThreadContext.DOMAIN_NAME);
-    ApplicationContext childApplicationContext = UNITIZE_APPLICATION_CONTEXT_MAP.get(domainName);
+    ApplicationContext childApplicationContext = null == domainName ? null :UNITIZE_APPLICATION_CONTEXT_MAP.get(domainName);
     if(StringUtils.isEmpty(domainName) || null == childApplicationContext){
       t = getSmallBean(targetClz, ROOT_APPLICATION_CONTEXT);
       if(null != t){
