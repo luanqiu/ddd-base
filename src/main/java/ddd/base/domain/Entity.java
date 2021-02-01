@@ -34,5 +34,4 @@ public interface Entity<T> extends DomainI {
 
   void setUpdateTime(Date updateTime);
 
-
 }
