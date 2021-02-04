@@ -1,14 +1,13 @@
 package ddd.base;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
-
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * ApplicationContextHelper
@@ -55,18 +54,24 @@ public class ApplicationContextHelper implements ApplicationContextAware {
     // 如果 domainName 为空，直接从父容器拿
     // 如果 domainName 不为空，先从子容器拿，找不到再从父容器拿
     T t = null;
+
+    // 当前租户的上下文
     String domainName = ThreadContext.get(ThreadContext.DOMAIN_NAME);
     ApplicationContext childApplicationContext = null == domainName ? null :UNITIZE_APPLICATION_CONTEXT_MAP.get(domainName);
-    if(StringUtils.isEmpty(domainName) || null == childApplicationContext){
-      t = getSmallBean(targetClz, ROOT_APPLICATION_CONTEXT);
-      if(null != t){
-        return t;
-      }
-    }
+
+    // 默认小酒窝上下文
+    ApplicationContext xiaojiuwoApplicationContext = UNITIZE_APPLICATION_CONTEXT_MAP.get("xiaojiuwo");
+
     t = getSmallBean(targetClz, childApplicationContext);
     if(null != t){
       return t;
     }
+
+    t = getSmallBean(targetClz, xiaojiuwoApplicationContext);
+    if(null != t){
+      return t;
+    }
+
     t = getSmallBean(targetClz, ROOT_APPLICATION_CONTEXT);
     if(null != t){
       return t;
@@ -75,18 +80,29 @@ public class ApplicationContextHelper implements ApplicationContextAware {
   }
 
   private static <T> T getSmallBean(Class<T> targetClz,ApplicationContext applicationContext){
+    if(null == applicationContext){
+      return null;
+    }
     T beanInstance = null;
     //byType
     try {
-      beanInstance = (T) applicationContext.getBean(targetClz);
-    } catch (Exception e) {
-      throw e;
+      beanInstance = applicationContext.getBean(targetClz);
+    } catch (NoSuchBeanDefinitionException e) {
+      return beanInstance;
     }
     //byName
     if (beanInstance == null) {
       String simpleName = targetClz.getSimpleName();
       simpleName = Character.toLowerCase(simpleName.charAt(0)) + simpleName.substring(1);
-      beanInstance = (T) applicationContext.getBean(simpleName);
+      Object beanInstanceO = null;
+      try{
+        beanInstanceO = applicationContext.getBean(simpleName);
+      }catch(NoSuchBeanDefinitionException e){
+        return beanInstance;
+      }
+      if(null != beanInstanceO){
+        return (T)beanInstanceO;
+      }
     }
     return beanInstance;
   }
@@ -95,22 +111,28 @@ public class ApplicationContextHelper implements ApplicationContextAware {
     // 如果 domainName 为空，直接从父容器拿
     // 如果 domainName 不为空，先从子容器拿，找不到再从父容器拿
     T t = null;
-    ApplicationContext childApplicationContext = UNITIZE_APPLICATION_CONTEXT_MAP.get(domainName);
-    if(StringUtils.isEmpty(domainName) || null == childApplicationContext){
-      t = getSmallBean(beanName, ROOT_APPLICATION_CONTEXT);
-      if(null != t){
-        return t;
-      }
-    }
+
+    // 当前租户的上下文
+    ApplicationContext childApplicationContext = null == domainName ? null :UNITIZE_APPLICATION_CONTEXT_MAP.get(domainName);
+
+    // 默认小酒窝上下文
+    ApplicationContext xiaojiuwoApplicationContext = UNITIZE_APPLICATION_CONTEXT_MAP.get("xiaojiuwo");
+
     t = getSmallBean(beanName, childApplicationContext);
     if(null != t){
       return t;
     }
+
+    t = getSmallBean(beanName, xiaojiuwoApplicationContext);
+    if(null != t){
+      return t;
+    }
+
     t = getSmallBean(beanName, ROOT_APPLICATION_CONTEXT);
     if(null != t){
       return t;
     }
-    throw new RuntimeException("找不到 bean"+beanName);
+    throw new RuntimeException("找不到 bean"+ beanName);
   }
 
   public static <T> T getBean(String beanName){
@@ -118,22 +140,27 @@ public class ApplicationContextHelper implements ApplicationContextAware {
     // 如果 domainName 不为空，先从子容器拿，找不到再从父容器拿
     T t = null;
     String domainName = ThreadContext.get(ThreadContext.DOMAIN_NAME);
-    ApplicationContext childApplicationContext = UNITIZE_APPLICATION_CONTEXT_MAP.get(domainName);
-    if(StringUtils.isEmpty(domainName) || null == childApplicationContext){
-      t = getSmallBean(beanName, ROOT_APPLICATION_CONTEXT);
-      if(null != t){
-        return t;
-      }
-    }
+    // 当前租户的上下文
+    ApplicationContext childApplicationContext = null == domainName ? null :UNITIZE_APPLICATION_CONTEXT_MAP.get(domainName);
+
+    // 默认小酒窝上下文
+    ApplicationContext xiaojiuwoApplicationContext = UNITIZE_APPLICATION_CONTEXT_MAP.get("xiaojiuwo");
+
     t = getSmallBean(beanName, childApplicationContext);
     if(null != t){
       return t;
     }
+
+    t = getSmallBean(beanName, xiaojiuwoApplicationContext);
+    if(null != t){
+      return t;
+    }
+
     t = getSmallBean(beanName, ROOT_APPLICATION_CONTEXT);
     if(null != t){
       return t;
     }
-    throw new RuntimeException("找不到 bean"+beanName);
+    throw new RuntimeException("找不到 bean"+ beanName);
   }
 
   private static <T> T getSmallBean(String beanName,ApplicationContext applicationContext){
@@ -141,12 +168,13 @@ public class ApplicationContextHelper implements ApplicationContextAware {
       return null;
     }
     String simpleName = Character.toLowerCase(beanName.charAt(0)) + beanName.substring(1);
-    Object bean =  applicationContext.getBean(simpleName);
+    Object bean = null;
+    try{
+      bean =  applicationContext.getBean(simpleName);
+    }catch(NoSuchBeanDefinitionException e){
+      return null;
+    }
     return (T) bean;
   }
-
-
-
-
 
 }

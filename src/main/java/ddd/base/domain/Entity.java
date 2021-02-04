@@ -34,4 +34,22 @@ public interface Entity<T> extends DomainI {
 
   void setUpdateTime(Date updateTime);
 
+  Long getId();
+
+  void setId(Long id);
+
+  String getCode();
+
+  void setCode(String code);
+
+  String getName();
+
+  void setName(String name);
+
+  String getDescript();
+
+  void setDescript(String descript);
+
+
+
 }
