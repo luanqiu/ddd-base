@@ -14,7 +14,7 @@ public abstract class BaseEntity<T> implements Entity<T> {
 	 * 每页多少
 	 */
 	@Transient
-	public Long pageSize = 5L;
+	public Long pageSize = 20L;
 
 	/**
 	 * 每页多少
@@ -44,5 +44,17 @@ public abstract class BaseEntity<T> implements Entity<T> {
 
 	public void setTotalPageSize(Long totalPageSize) {
 		this.totalPageSize = totalPageSize;
+	}
+
+	public void init(){
+		if(null == currentPage){
+			currentPage = 1L;
+		}
+		if(null == pageSize){
+			pageSize = 20L;
+		}
+		if(null == totalPageSize){
+			totalPageSize = 0L;
+		}
 	}
 }
