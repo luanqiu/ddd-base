@@ -6,9 +6,19 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ThreadContext {
 
   /**
-   * 用户登录信息
+   * 创建者信息
    */
   public static String DOMAIN_NAME = "domainName";
+
+  /**
+   * 创建者信息
+   */
+  public static String DATA_OWNER_CODE = "dataOwnerCode";
+
+  /**
+   * 查询创建者本身数据
+   */
+  public static String SELF_DATA_OWNER_CODE = "selfDataOwnerCode";
 
   public static final ThreadLocal<Map<String,Object>> CONTEXT = new InheritableThreadLocal<>();
 

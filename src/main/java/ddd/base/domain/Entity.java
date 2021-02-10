@@ -22,6 +22,10 @@ public interface Entity<T> extends DomainI {
 
   void setOwnerCode(String ownerCode);
 
+  String getDataOwnerCode();
+
+  void setDataOwnerCode(String ownerCode);
+
   Boolean getAvailable();
 
   void setAvailable(Boolean available);

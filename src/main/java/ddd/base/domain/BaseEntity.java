@@ -1,5 +1,6 @@
 package ddd.base.domain;
 
+import javax.persistence.Column;
 import javax.persistence.Transient;
 
 public abstract class BaseEntity<T> implements Entity<T> {
@@ -21,6 +22,12 @@ public abstract class BaseEntity<T> implements Entity<T> {
 	 */
 	@Transient
 	public Long totalPageSize = 0L;
+
+	/**
+	 * 数据拥有者
+	 */
+	@Column(name = "data_owner_code")
+	public String dataOwnerCode;
 
 	public Long getCurrentPage() {
 		return currentPage;
@@ -44,6 +51,14 @@ public abstract class BaseEntity<T> implements Entity<T> {
 
 	public void setTotalPageSize(Long totalPageSize) {
 		this.totalPageSize = totalPageSize;
+	}
+
+	public String getDataOwnerCode(){
+		return dataOwnerCode;
+	}
+
+	public void setDataOwnerCode(String dataOwnerCode){
+		this.dataOwnerCode = dataOwnerCode;
 	}
 
 	public void init(){

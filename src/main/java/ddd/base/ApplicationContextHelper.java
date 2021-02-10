@@ -160,7 +160,7 @@ public class ApplicationContextHelper implements ApplicationContextAware {
     if(null != t){
       return t;
     }
-    throw new RuntimeException("找不到 bean"+ beanName);
+    throw new RuntimeException("找不到 bean:"+ beanName);
   }
 
   private static <T> T getSmallBean(String beanName,ApplicationContext applicationContext){
