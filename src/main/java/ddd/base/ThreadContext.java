@@ -16,6 +16,11 @@ public class ThreadContext {
   public static String DATA_OWNER_CODE = "dataOwnerCode";
 
   /**
+   * 是否需要进行分页
+   */
+  public static String IS_NEED_PAGE_SIZE = "isNeedPageSize";
+
+  /**
    * 查询创建者本身数据
    */
   public static String SELF_DATA_OWNER_CODE = "selfDataOwnerCode";
