@@ -1,5 +1,6 @@
 package ddd.base.domain;
 
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Transient;
 
@@ -28,6 +29,12 @@ public abstract class BaseEntity<T> implements Entity<T> {
 	 */
 	@Column(name = "data_owner_code")
 	public String dataOwnerCode;
+
+	/**
+	 * 主要用于批量操作的对象
+	 */
+	@Transient
+	public List<BaseEntity> baseEntitys;
 
 	public Long getCurrentPage() {
 		return currentPage;
@@ -59,6 +66,14 @@ public abstract class BaseEntity<T> implements Entity<T> {
 
 	public void setDataOwnerCode(String dataOwnerCode){
 		this.dataOwnerCode = dataOwnerCode;
+	}
+
+	public List<BaseEntity> getBaseEntitys() {
+		return baseEntitys;
+	}
+
+	public void setBaseEntitys(List<BaseEntity> baseEntitys) {
+		this.baseEntitys = baseEntitys;
 	}
 
 	public void init(){
