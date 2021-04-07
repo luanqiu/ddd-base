@@ -56,7 +56,7 @@ public class ApplicationContextHelper implements ApplicationContextAware {
     T t = null;
 
     // 当前租户的上下文
-    String domainName = ThreadContext.get(ThreadContext.DOMAIN_NAME);
+    String domainName = ThreadContext.get(ThreadContext.DATA_OWNER_CODE);
     ApplicationContext childApplicationContext = null == domainName ? null :UNITIZE_APPLICATION_CONTEXT_MAP.get(domainName);
 
     // 默认小酒窝上下文
@@ -139,7 +139,7 @@ public class ApplicationContextHelper implements ApplicationContextAware {
     // 如果 domainName 为空，直接从父容器拿
     // 如果 domainName 不为空，先从子容器拿，找不到再从父容器拿
     T t = null;
-    String domainName = ThreadContext.get(ThreadContext.DOMAIN_NAME);
+    String domainName = ThreadContext.get(ThreadContext.DATA_OWNER_CODE);
     // 当前租户的上下文
     ApplicationContext childApplicationContext = null == domainName ? null :UNITIZE_APPLICATION_CONTEXT_MAP.get(domainName);
 
