@@ -31,10 +31,23 @@ public abstract class BaseEntity<T> implements Entity<T> {
 	public String dataOwnerCode;
 
 	/**
+	 * 是否需要更新数据库标志
+	 */
+	public boolean update = true;
+
+	/**
 	 * 主要用于批量操作的对象
 	 */
 	@Transient
 	public List<BaseEntity> baseEntitys;
+
+	public boolean getUpdate() {
+		return update;
+	}
+
+	public void setUpdate(boolean update) {
+		this.update = update;
+	}
 
 	public Long getCurrentPage() {
 		return currentPage;
