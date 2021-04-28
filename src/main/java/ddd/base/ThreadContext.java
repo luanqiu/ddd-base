@@ -11,6 +11,11 @@ public class ThreadContext {
   public static String DOMAIN_NAME = "domainName";
 
   /**
+   * 登陆者信息
+   */
+  public static String LOGIN_CODE = "loginCode";
+
+  /**
    * 创建者信息
    */
   public static String DATA_OWNER_CODE = "dataOwnerCode";
