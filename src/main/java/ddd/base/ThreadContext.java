@@ -20,6 +20,8 @@ public class ThreadContext {
    */
   public static String DATA_OWNER_CODE = "dataOwnerCode";
 
+  public static String OWNER_CODE = "ownerCode";
+
   /**
    * 是否需要进行分页
    */

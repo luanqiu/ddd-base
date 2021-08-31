@@ -33,7 +33,23 @@ public abstract class BaseEntity<T> implements Entity<T> {
 	/**
 	 * 是否需要更新数据库标志
 	 */
+	@Transient
 	public boolean update = true;
+
+	/**
+	 * 是否需要新增数据库标志
+	 * true 需要新增
+	 * false 不需要
+	 */
+	@Transient
+	private boolean insert = true;
+
+	/**
+	 * 最新数据库操作类型
+	 * @see RepositoryLogicTypeEnum
+	 */
+	@Transient
+	private String lastNewRepositoryLogicType;
 
 	/**
 	 * 主要用于批量操作的对象
@@ -41,12 +57,42 @@ public abstract class BaseEntity<T> implements Entity<T> {
 	@Transient
 	public List<BaseEntity> baseEntitys;
 
+	/**
+	 * 对数据库 in 的操作
+	 */
+	@Transient
+	public List<InVO> inVOS;
+
+	public List<InVO> getInVOS() {
+		return inVOS;
+	}
+
+	public void setInVOS(List<InVO> inVOS) {
+		this.inVOS = inVOS;
+	}
+
 	public boolean getUpdate() {
 		return update;
 	}
 
 	public void setUpdate(boolean update) {
 		this.update = update;
+	}
+
+	public boolean getInsert() {
+		return insert;
+	}
+
+	public void setInsert(boolean insert) {
+		this.insert = insert;
+	}
+
+	public String getLastNewRepositoryLogicType() {
+		return lastNewRepositoryLogicType;
+	}
+
+	public void setLastNewRepositoryLogicType(String lastNewRepositoryLogicType) {
+		this.lastNewRepositoryLogicType = lastNewRepositoryLogicType;
 	}
 
 	public Long getCurrentPage() {
