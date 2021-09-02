@@ -28,6 +28,14 @@ public class ThreadContext {
   public static String IS_NEED_PAGE_SIZE = "isNeedPageSize";
 
   /**
+   * 每页需要的个数
+   */
+  public static String PAGE_SIZE = "pageSize";
+
+
+  public static String CURRENT_PAGE = "currentPage";
+
+  /**
    * 查询创建者本身数据
    */
   public static String SELF_DATA_OWNER_CODE = "selfDataOwnerCode";

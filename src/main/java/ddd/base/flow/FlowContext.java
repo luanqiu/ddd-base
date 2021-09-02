@@ -56,5 +56,7 @@ public class FlowContext implements Serializable {
       }
     }
     put("ownerCode", ThreadContext.get(ThreadContext.DOMAIN_NAME));
+    put(ThreadContext.PAGE_SIZE, ThreadContext.get(ThreadContext.PAGE_SIZE));
+    put(ThreadContext.CURRENT_PAGE, ThreadContext.get(ThreadContext.CURRENT_PAGE));
   }
 }
