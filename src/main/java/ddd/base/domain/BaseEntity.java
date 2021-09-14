@@ -45,6 +45,14 @@ public abstract class BaseEntity<T> implements Entity<T> {
 	private boolean insert = true;
 
 	/**
+	 * 是否需要数据拥有者
+	 * true 不需要
+	 * false 需要
+	 */
+	@Transient
+	private boolean noDataOwnerCode = false;
+
+	/**
 	 * 最新数据库操作类型
 	 * @see RepositoryLogicTypeEnum
 	 */
@@ -133,6 +141,14 @@ public abstract class BaseEntity<T> implements Entity<T> {
 
 	public void setBaseEntitys(List<BaseEntity> baseEntitys) {
 		this.baseEntitys = baseEntitys;
+	}
+
+	public boolean isNoDataOwnerCode() {
+		return noDataOwnerCode;
+	}
+
+	public void setNoDataOwnerCode(boolean noDataOwnerCode) {
+		this.noDataOwnerCode = noDataOwnerCode;
 	}
 
 	public void init(){
