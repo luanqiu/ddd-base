@@ -13,7 +13,7 @@ public class WxComponentAccessTokenDTO implements Serializable {
 
   private static final long serialVersionUID = 3570762692300573568L;
 
-  private String id;
+  private Long id;
   private String appId;
   private String token;
   private Boolean available;
