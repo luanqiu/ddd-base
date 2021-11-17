@@ -45,6 +45,21 @@ public abstract class BaseEntity<T> implements Entity<T> {
 	private boolean insert = true;
 
 	/**
+	 * 是否需要查询数据库标志
+	 * true 需要新增
+	 * false 不需要
+	 */
+	@Transient
+	private boolean query = true;
+
+	/**
+	 * 和query配置使用，query == false 时，直接返回 queryResult
+	 */
+	@Transient
+	public Object queryResult;
+
+
+	/**
 	 * 是否需要数据拥有者
 	 * true 不需要
 	 * false 需要
@@ -149,6 +164,22 @@ public abstract class BaseEntity<T> implements Entity<T> {
 
 	public void setNoDataOwnerCode(boolean noDataOwnerCode) {
 		this.noDataOwnerCode = noDataOwnerCode;
+	}
+
+	public boolean isQuery() {
+		return query;
+	}
+
+	public void setQuery(boolean query) {
+		this.query = query;
+	}
+
+	public Object getQueryResult() {
+		return queryResult;
+	}
+
+	public void setQueryResult(Object queryResult) {
+		this.queryResult = queryResult;
 	}
 
 	public void init(){
