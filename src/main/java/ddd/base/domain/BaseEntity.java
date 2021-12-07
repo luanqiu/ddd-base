@@ -42,7 +42,7 @@ public abstract class BaseEntity<T> implements Entity<T> {
 	 * false 不需要
 	 */
 	@Transient
-	private boolean insert = true;
+	public boolean insert = true;
 
 	/**
 	 * 是否需要查询数据库标志
@@ -50,7 +50,7 @@ public abstract class BaseEntity<T> implements Entity<T> {
 	 * false 不需要
 	 */
 	@Transient
-	private boolean query = true;
+	public boolean query = true;
 
 	/**
 	 * 和query配置使用，query == false 时，直接返回 queryResult
@@ -65,14 +65,26 @@ public abstract class BaseEntity<T> implements Entity<T> {
 	 * false 需要
 	 */
 	@Transient
-	private boolean noDataOwnerCode = false;
+	public boolean noDataOwnerCode = false;
+
+
+	/**
+	 * insert 之前是否进行幂等校验
+	 * true 需要
+	 * false 不需要
+	 */
+	@Transient
+	public boolean miDengBeforeInsert = false;
+
+	@Transient
+	public BaseEntity miDengEntity;
 
 	/**
 	 * 最新数据库操作类型
 	 * @see RepositoryLogicTypeEnum
 	 */
 	@Transient
-	private String lastNewRepositoryLogicType;
+	public String lastNewRepositoryLogicType;
 
 	/**
 	 * 主要用于批量操作的对象
@@ -85,6 +97,30 @@ public abstract class BaseEntity<T> implements Entity<T> {
 	 */
 	@Transient
 	public List<InVO> inVOS;
+
+	public boolean isUpdate() {
+		return update;
+	}
+
+	public boolean isInsert() {
+		return insert;
+	}
+
+	public boolean isMiDengBeforeInsert() {
+		return miDengBeforeInsert;
+	}
+
+	public void setMiDengBeforeInsert(boolean miDengBeforeInsert) {
+		this.miDengBeforeInsert = miDengBeforeInsert;
+	}
+
+	public BaseEntity getMiDengEntity() {
+		return miDengEntity;
+	}
+
+	public void setMiDengEntity(BaseEntity miDengEntity) {
+		this.miDengEntity = miDengEntity;
+	}
 
 	public List<InVO> getInVOS() {
 		return inVOS;
@@ -193,4 +229,5 @@ public abstract class BaseEntity<T> implements Entity<T> {
 			totalPageSize = 0L;
 		}
 	}
+
 }
