@@ -1,8 +1,10 @@
 package ddd.base.utils;
 
+import org.springframework.context.ApplicationContext;
+
 public interface IApplicationManager {
 
-	boolean registerApplicationByJar(String applicationKey, String loadFilePath,
+	ApplicationContext registerApplicationByJar(String domainName,String solutionCode, String loadFilePath,
 			String packagePrefix) throws Exception;
 
 }

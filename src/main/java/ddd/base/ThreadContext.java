@@ -2,65 +2,61 @@ package ddd.base;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import lombok.extern.slf4j.Slf4j;
+import org.openjdk.jol.vm.VM;
 
+@Slf4j
 public class ThreadContext {
 
-  /**
-   * 创建者信息
-   */
+  //创建者信息,等同于 ownerCode
   public static String DOMAIN_NAME = "domainName";
-
-  /**
-   * 登陆者信息
-   */
+  //创建者信息
+  public static String DATA_OWNER_CODE = "dataOwnerCode";
+  //创建者信息
+  public static String SOLUTION_CODE = "solutionCode";
+  //登陆者信息
   public static String LOGIN_CODE = "loginCode";
 
-  /**
-   * 创建者信息
-   */
-  public static String DATA_OWNER_CODE = "dataOwnerCode";
 
-  public static String OWNER_CODE = "ownerCode";
 
-  /**
-   * 是否需要进行分页
-   */
+
   public static String IS_NEED_PAGE_SIZE = "isNeedPageSize";
-
-  /**
-   * 每页需要的个数
-   */
   public static String PAGE_SIZE = "pageSize";
-
-
   public static String CURRENT_PAGE = "currentPage";
 
-  /**
-   * 查询创建者本身数据
-   */
-  public static String SELF_DATA_OWNER_CODE = "selfDataOwnerCode";
+
+
+
+
+
+
 
   public static final ThreadLocal<Map<String,Object>> CONTEXT = new InheritableThreadLocal<>();
 
-  public static final void put(String key,Object value){
-    if(null == key || null == value){
-      return;
-    }
-    Map<String,Object> map = CONTEXT.get();
-    if(null == map){
-      map = new ConcurrentHashMap<>();
-      CONTEXT.set(map);
-    }
-    map.put(key,value);
+  public static final void  put(String key,Object value){
+      if(null == key || null == value){
+        return;
+      }
+      Map<String,Object> map = CONTEXT.get();
+      if(null == map){
+        map = new ConcurrentHashMap<>();
+        CONTEXT.set(map);
+      }
+      map.put(key,value);
   }
 
   public static final <T> T get(String key){
-    return (T) CONTEXT.get().getOrDefault(key, null);
+    try{
+      return (T) CONTEXT.get().getOrDefault(key, null);
+    }catch(NullPointerException e){
+      log.info("ThreadContext NullPointerException {} ",key,e);
+      return null;
+    }
   }
 
-  public static final void clear(){
-    for(int i=0;i<2;i++){
-      CONTEXT.get().clear();
-    }
+  public static final void  clear(){
+      for(int i=0;i<2;i++){
+        CONTEXT.remove();
+      }
   }
 }
