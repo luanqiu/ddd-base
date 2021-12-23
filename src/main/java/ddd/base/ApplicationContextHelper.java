@@ -1,5 +1,10 @@
 package ddd.base;
 
+import ddd.base.utils.AopTargetUtils;
+import java.lang.reflect.Field;
+import org.aopalliance.intercept.MethodInterceptor;
+import org.springframework.aop.TargetSource;
+import org.springframework.aop.framework.AdvisedSupport;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.ApplicationContext;
@@ -93,6 +98,7 @@ public class ApplicationContextHelper implements ApplicationContextAware {
       Object beanInstanceO = null;
       try{
         beanInstanceO = applicationContext.getBean(simpleName);
+        beanInstanceO = AopTargetUtils.getTarget(beanInstanceO);
       }catch(NoSuchBeanDefinitionException e){
         return beanInstance;
       }
@@ -160,10 +166,12 @@ public class ApplicationContextHelper implements ApplicationContextAware {
     Object bean = null;
     try{
       bean =  applicationContext.getBean(simpleName);
+      bean = AopTargetUtils.getTarget(bean);
     }catch(NoSuchBeanDefinitionException e){
       return null;
     }
     return (T) bean;
   }
+
 
 }
