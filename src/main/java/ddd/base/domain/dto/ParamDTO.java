@@ -56,6 +56,10 @@ public class ParamDTO extends BaseDTO {
   private Date updateTime;
   private String dataOwnerCode;
 
+  private String fullName;
+  private Class clazz;
+
+
   /**
    * 当前对象的局部变量
    */

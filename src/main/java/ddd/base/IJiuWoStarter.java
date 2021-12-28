@@ -12,6 +12,12 @@ public interface IJiuWoStarter {
 	void publishSolution(String domainName, String solutionCode, String codePath,
 			String codePackagePrefix);
 
+	/**
+	 * 初始化领域
+	 * @param domainName
+	 * @param solutionCode
+	 */
+	void initDomain(String domainName, String solutionCode);
 
 	void init();
 }

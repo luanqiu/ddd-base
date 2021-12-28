@@ -1,6 +1,7 @@
 package ddd.base.domain.dto;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import lombok.Data;
@@ -36,7 +37,7 @@ public class EntityAbilityDTO extends BaseDTO {
   /**
    * 入参
    */
-  private List<RequestParamDTO> requestParams;
+  private List<RequestParamDTO> requestParams = new ArrayList<>();
 
   /**
    * 出参

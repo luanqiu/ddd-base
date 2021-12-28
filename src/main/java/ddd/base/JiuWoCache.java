@@ -167,6 +167,43 @@ public class JiuWoCache implements Serializable {
    */
   private ApplicationContext applicationContext;
 
+  /**
+   *  check jiuWoCache 的数据是否可用
+   * @param jiuWoCache
+   * @return false:不可用；true:可用
+   */
+  public static final boolean checkAvailable(JiuWoCache jiuWoCache){
+    if(null == jiuWoCache
+      || null == jiuWoCache.getApplicationContext()
+      || jiuWoCache.getEntityMap().size() <= 0
+    ){
+      return Boolean.FALSE;
+    }
+    return Boolean.TRUE;
+  }
+
+  /**
+   * 获取实体
+   * 先从当前上下文取
+   * 再从当前上下文取
+   * 最后从酒窝上下文取
+   * @param entityKey
+   * @return
+   */
+  public static EntityDTO findEntity(String entityKey) {
+    EntityDTO entity = getJiuWoCache().getEntityMap().get(entityKey);
+    if (null != entity) {
+      return entity;
+    }
+    if(null != getParentJiuWoCache()){
+      entity = getParentJiuWoCache().getEntityMap().get(entityKey);
+      if (null != entity) {
+        return entity;
+      }
+    }
+    return getJiuWoDefaultCache().getEntityMap().get(entityKey);
+  }
+
   public Map<String, BaseEntity> getSolutionMap() {
     return solutionMap;
   }
@@ -262,4 +299,5 @@ public class JiuWoCache implements Serializable {
   public void setParentOwnerCode(String parentOwnerCode) {
     this.parentOwnerCode = parentOwnerCode;
   }
+
 }

@@ -3,7 +3,6 @@ package ddd.base;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import lombok.extern.slf4j.Slf4j;
-import org.openjdk.jol.vm.VM;
 
 @Slf4j
 public class ThreadContext {
@@ -17,19 +16,9 @@ public class ThreadContext {
   //登陆者信息
   public static String LOGIN_CODE = "loginCode";
 
-
-
-
   public static String IS_NEED_PAGE_SIZE = "isNeedPageSize";
   public static String PAGE_SIZE = "pageSize";
   public static String CURRENT_PAGE = "currentPage";
-
-
-
-
-
-
-
 
   public static final ThreadLocal<Map<String,Object>> CONTEXT = new InheritableThreadLocal<>();
 
@@ -59,4 +48,26 @@ public class ThreadContext {
         CONTEXT.remove();
       }
   }
+
+    /**
+     * 初始化必要的字段
+     */
+    public static final void initRequiredField(
+            String domainName,
+            String dataOwnerCode,
+            String solutionCode,
+            String loginCode,
+            Boolean isNeedPageSize,
+            Long pageSize,
+            Long currentPage
+    ) {
+        ThreadContext.put(ThreadContext.DOMAIN_NAME,domainName);
+        ThreadContext.put(ThreadContext.DATA_OWNER_CODE,dataOwnerCode);
+        ThreadContext.put(ThreadContext.SOLUTION_CODE,solutionCode);
+        ThreadContext.put(ThreadContext.LOGIN_CODE,loginCode);
+        ThreadContext.put(ThreadContext.IS_NEED_PAGE_SIZE,isNeedPageSize);
+        ThreadContext.put(ThreadContext.PAGE_SIZE,pageSize);
+        ThreadContext.put(ThreadContext.CURRENT_PAGE,currentPage);
+    }
+
 }
