@@ -57,7 +57,7 @@ public class JiuWoCache implements Serializable {
   }
 
   public static final JiuWoCache getJiuWoCache(){
-    String ownerCode = ThreadContext.get(ThreadContext.DATA_OWNER_CODE);
+    String ownerCode = ThreadContext.get(ThreadContext.DOMAIN_NAME);
     String solutionCode = ThreadContext.get(ThreadContext.SOLUTION_CODE);
     if("code20211207155344732301".equalsIgnoreCase(solutionCode) ||
     "xiaojiuwo".equalsIgnoreCase(ownerCode)){

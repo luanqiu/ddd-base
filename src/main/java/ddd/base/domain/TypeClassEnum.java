@@ -2,6 +2,7 @@ package ddd.base.domain;
 
 import ddd.base.ApplicationContextHelper;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -9,6 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 *author  wenhe
 *date 2020/2/21
 */
+@Slf4j
 @Getter
 public enum TypeClassEnum {
 
@@ -50,12 +52,22 @@ public enum TypeClassEnum {
   public static final String convertNodeRequestParamTypeSimpleToCX(String simpleType, String code) {
     // 实体,实体的 code 从字符串中截取
     if(simpleType.startsWith("o_en_") && !simpleType.endsWith("_List")){
-      return ApplicationContextHelper.getBean(simpleType.split("_")[2]+"Entity").getClass().getName();
+      try{
+        return ApplicationContextHelper.getBean(simpleType.split("_")[2]+"Entity").getClass().getName();
+      }catch(Exception e){
+        log.error("convertNodeRequestParamTypeSimpleToCX name {}",simpleType.split("_")[2]+"Entity");
+        return null;
+      }
     }
     // List实体的泛型
     if(simpleType.startsWith("o_en_") && simpleType.endsWith("_List")){
-      String fullName = ApplicationContextHelper.getBean(simpleType.split("_")[2]+"Entity").getClass().getName();
-      return "java.util.List<"+ fullName +">";
+      try{
+        String fullName = ApplicationContextHelper.getBean(simpleType.split("_")[2]+"Entity").getClass().getName();
+        return "java.util.List<"+ fullName +">";
+      }catch(Exception e){
+        log.error("convertNodeRequestParamTypeSimpleToCX name {}",simpleType.split("_")[2]+"Entity");
+        return null;
+      }
     }
     if(StringUtils.equals(simpleType,TypeClassEnum.String.getCode())){
       return String.getClass().getName();
@@ -90,7 +102,12 @@ public enum TypeClassEnum {
   public static final Class convertNodeRequestParamTypeSimpleToClazz(String simpleType, String code) {
     // 实体
     if(simpleType.startsWith("o_en_") && !simpleType.endsWith("_List")){
-      return ApplicationContextHelper.getBean(simpleType.split("_")[2]+"Entity").getClass();
+      try{
+        return ApplicationContextHelper.getBean(simpleType.split("_")[2]+"Entity").getClass();
+      }catch(Exception e){
+        log.error("convertNodeRequestParamTypeSimpleToClazz name {}",simpleType.split("_")[2]+"Entity");
+        return null;
+      }
     }
     // List实体的泛型
     if(simpleType.startsWith("o_en_") && simpleType.endsWith("_List")){

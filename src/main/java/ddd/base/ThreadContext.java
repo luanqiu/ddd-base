@@ -58,8 +58,8 @@ public class ThreadContext {
             String solutionCode,
             String loginCode,
             Boolean isNeedPageSize,
-            Long pageSize,
-            Long currentPage
+            Integer pageSize,
+            Integer currentPage
     ) {
         ThreadContext.put(ThreadContext.DOMAIN_NAME,domainName);
         ThreadContext.put(ThreadContext.DATA_OWNER_CODE,dataOwnerCode);
