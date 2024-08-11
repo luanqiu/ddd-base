@@ -67,6 +67,13 @@ public abstract class BaseEntity<T> implements Entity<T> {
 	@Transient
 	public boolean noDataOwnerCode = false;
 
+	/**
+	 * 是否需要在基础设施层执行脚本
+	 * true 不在基础设施层执行脚本
+	 * false 在基础设施层执行脚本
+	 */
+	@Transient
+	public boolean noExecuteGroovy = false;
 
 	/**
 	 * insert 之前是否进行幂等校验
