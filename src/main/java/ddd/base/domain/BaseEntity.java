@@ -1,5 +1,6 @@
 package ddd.base.domain;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Transient;
@@ -22,7 +23,7 @@ public abstract class BaseEntity<T> implements Entity<T> {
 	 * 每页多少
 	 */
 	@Transient
-	public Long totalPageSize = 0L;
+	public Long totalPageSize;
 
 	/**
 	 * 数据拥有者
@@ -34,6 +35,7 @@ public abstract class BaseEntity<T> implements Entity<T> {
 	 * 是否需要更新数据库标志
 	 */
 	@Transient
+	@JSONField(serialize=false)
 	public boolean update = true;
 
 	/**
@@ -42,6 +44,7 @@ public abstract class BaseEntity<T> implements Entity<T> {
 	 * false 不需要
 	 */
 	@Transient
+	@JSONField(serialize=false)
 	public boolean insert = true;
 
 	/**
@@ -50,6 +53,7 @@ public abstract class BaseEntity<T> implements Entity<T> {
 	 * false 不需要
 	 */
 	@Transient
+	@JSONField(serialize=false)
 	public boolean query = true;
 
 	/**
@@ -65,6 +69,7 @@ public abstract class BaseEntity<T> implements Entity<T> {
 	 * false 需要
 	 */
 	@Transient
+	@JSONField(serialize=false)
 	public boolean noDataOwnerCode = false;
 
 	/**
@@ -73,6 +78,7 @@ public abstract class BaseEntity<T> implements Entity<T> {
 	 * false 在基础设施层执行脚本
 	 */
 	@Transient
+	@JSONField(serialize=false)
 	public boolean noExecuteGroovy = false;
 
 	/**
@@ -81,6 +87,7 @@ public abstract class BaseEntity<T> implements Entity<T> {
 	 * false 不需要
 	 */
 	@Transient
+	@JSONField(serialize=false)
 	public boolean miDengBeforeInsert = false;
 
 	@Transient
