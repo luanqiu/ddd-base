@@ -1,7 +1,9 @@
 package ddd.base.domain;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Transient;
 
@@ -111,6 +113,12 @@ public abstract class BaseEntity<T> implements Entity<T> {
 	 */
 	@Transient
 	public List<InVO> inVOS;
+
+	/**
+	 * 数据转化错误类
+	 */
+	@Transient
+	private Set<String> errorSets = new HashSet<>();
 
 	public boolean isUpdate() {
 		return update;
@@ -230,6 +238,14 @@ public abstract class BaseEntity<T> implements Entity<T> {
 
 	public void setQueryResult(Object queryResult) {
 		this.queryResult = queryResult;
+	}
+
+	public Set<String> getErrorSets() {
+		return errorSets;
+	}
+
+	public void setErrorSets(Set<String> errorSets) {
+		this.errorSets = errorSets;
 	}
 
 	public void init(){
