@@ -1,8 +1,10 @@
 package ddd.base.domain;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Transient;
@@ -116,9 +118,16 @@ public abstract class BaseEntity<T> implements Entity<T> {
 
 	/**
 	 * 数据转化错误类
+	 * key:execl 行号
 	 */
 	@Transient
-	private Set<String> errorSets = new HashSet<>();
+	private Map<Integer,Set<String>> errorSetsMap = new HashMap<>();
+
+	/**
+	 * execl的行号
+	 */
+	@Transient
+	private int execlLine;
 
 	public boolean isUpdate() {
 		return update;
@@ -240,12 +249,30 @@ public abstract class BaseEntity<T> implements Entity<T> {
 		this.queryResult = queryResult;
 	}
 
-	public Set<String> getErrorSets() {
-		return errorSets;
+	public Map<Integer, Set<String>> getErrorSetsMap() {
+		return errorSetsMap;
 	}
 
-	public void setErrorSets(Set<String> errorSets) {
-		this.errorSets = errorSets;
+	public void addErrorCodes(Integer execlLine,String errors){
+		Set<String> s = this.getErrorSetsMap().getOrDefault(execlLine,new HashSet<>());
+		s.add(errors);
+		this.getErrorSetsMap().put(execlLine,s);
+	}
+
+	public void setErrorSetsMap(Map<Integer, Set<String>> errorSetsMap) {
+		this.errorSetsMap = errorSetsMap;
+	}
+
+	public int getExeclLine() {
+		return execlLine;
+	}
+
+	public void setExeclLine(int execlLine) {
+		this.execlLine = execlLine;
+	}
+
+	public boolean isNoExecuteGroovy() {
+		return noExecuteGroovy;
 	}
 
 	public void init(){
