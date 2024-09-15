@@ -118,11 +118,14 @@ public abstract class BaseEntity<T> implements Entity<T> {
 
 	/**
 	 * 数据转化错误类
-	 * key:execl 行号
+	 * key:execl 行号/唯一表示
+	 * keyTwo:列名
 	 */
 	@Transient
-	private Map<Integer,Set<String>> errorSetsMap = new HashMap<>();
+	private Map<String,Set<String>> errorSetsMap = new HashMap<>();
 
+	@Transient
+	private Map<String, Map<String, Set<String>>> errorSetsMapTwo = new HashMap<>();
 	/**
 	 * execl的行号
 	 */
@@ -249,17 +252,34 @@ public abstract class BaseEntity<T> implements Entity<T> {
 		this.queryResult = queryResult;
 	}
 
-	public Map<Integer, Set<String>> getErrorSetsMap() {
+	public Map<String,Set<String>> getErrorSetsMap() {
 		return errorSetsMap;
 	}
 
-	public void addErrorCodes(Integer execlLine,String errors){
-		Set<String> s = this.getErrorSetsMap().getOrDefault(execlLine,new HashSet<>());
+	public void addErrorCodes(String execlLine, String errors) {
+		Set<String> s = this.getErrorSetsMap().getOrDefault(execlLine, new HashSet<>());
 		s.add(errors);
-		this.getErrorSetsMap().put(execlLine,s);
+		this.getErrorSetsMap().put(execlLine, s);
 	}
 
-	public void setErrorSetsMap(Map<Integer, Set<String>> errorSetsMap) {
+	public void addErrorCodesTwo(String execlLine, String fieldCode, String errors) {
+		Map<String,Set<String>> m = this.getErrorSetsMapTwo().getOrDefault(execlLine, new HashMap<>());
+		Set<String> s = m.getOrDefault(fieldCode, new HashSet<>());
+		s.add(errors);
+		m.put(fieldCode, s);
+		this.getErrorSetsMapTwo().put(execlLine, m);
+	}
+
+	public Map<String, Map<String, Set<String>>> getErrorSetsMapTwo() {
+		return errorSetsMapTwo;
+	}
+
+	public void setErrorSetsMapTwo(
+			Map<String, Map<String, Set<String>>> errorSetsMapTwo) {
+		this.errorSetsMapTwo = errorSetsMapTwo;
+	}
+
+	public void setErrorSetsMap(Map<String,Set<String>> errorSetsMap) {
 		this.errorSetsMap = errorSetsMap;
 	}
 
