@@ -130,7 +130,7 @@ public abstract class BaseEntity<T> implements Entity<T> {
 	 * execl的行号
 	 */
 	@Transient
-	private int execlLine;
+	private String execlLine;
 
 	public boolean isUpdate() {
 		return update;
@@ -283,11 +283,11 @@ public abstract class BaseEntity<T> implements Entity<T> {
 		this.errorSetsMap = errorSetsMap;
 	}
 
-	public int getExeclLine() {
+	public String getExeclLine() {
 		return execlLine;
 	}
 
-	public void setExeclLine(int execlLine) {
+	public void setExeclLine(String execlLine) {
 		this.execlLine = execlLine;
 	}
 
