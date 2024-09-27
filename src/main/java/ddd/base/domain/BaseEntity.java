@@ -21,7 +21,7 @@ public abstract class BaseEntity<T> implements Entity<T> {
 	 * 每页多少
 	 */
 	@Transient
-	public Long pageSize = 500L;
+	public Long pageSize = 5000L;
 
 	/**
 	 * 每页多少
