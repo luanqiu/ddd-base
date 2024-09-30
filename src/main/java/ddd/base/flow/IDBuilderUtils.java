@@ -25,9 +25,24 @@ public class IDBuilderUtils {
     return idBuilder.toString();
   }
 
+  public static String build(String prefix,int length) {
+    String timeStamp = DTF.format(LocalDateTime.now());
+    StringBuilder idBuilder = new StringBuilder();
+    idBuilder.append(prefix);
+    idBuilder.append(timeStamp);
+    getRandomSive(idBuilder,length);
+    return idBuilder.toString();
+  }
+  private static void getRandomSive(StringBuilder idBuilder,int length){
+    Random random = new Random();
+    for (int i=0;i<length;i++)
+    {
+      idBuilder.append(random.nextInt(10));
+    }
+  }
+
   private static void getRandomSive(StringBuilder idBuilder){
     Random random = new Random();
-    String result="";
     for (int i=0;i<6;i++)
     {
       idBuilder.append(random.nextInt(10));
