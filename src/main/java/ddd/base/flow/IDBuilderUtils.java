@@ -26,12 +26,13 @@ public class IDBuilderUtils {
   }
 
   public static String build(String prefix,int length) {
-    String timeStamp = DTF.format(LocalDateTime.now());
-    StringBuilder idBuilder = new StringBuilder();
-    idBuilder.append(prefix);
-    idBuilder.append(timeStamp);
-    getRandomSive(idBuilder,length);
-    return idBuilder.toString();
+    return IDGeneratorUtil.getRedisNo(prefix,length,true,false);
+//    String timeStamp = DTF.format(LocalDateTime.now());
+//    StringBuilder idBuilder = new StringBuilder();
+//    idBuilder.append(prefix);
+//    idBuilder.append(timeStamp);
+//    getRandomSive(idBuilder,length);
+//    return idBuilder.toString();
   }
   private static void getRandomSive(StringBuilder idBuilder,int length){
     Random random = new Random();
