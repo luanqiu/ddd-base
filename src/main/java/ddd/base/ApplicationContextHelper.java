@@ -1,10 +1,6 @@
 package ddd.base;
 
 import ddd.base.utils.AopTargetUtils;
-import java.lang.reflect.Field;
-import org.aopalliance.intercept.MethodInterceptor;
-import org.springframework.aop.TargetSource;
-import org.springframework.aop.framework.AdvisedSupport;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.ApplicationContext;
@@ -23,7 +19,7 @@ public class ApplicationContextHelper implements ApplicationContextAware {
    * 主 ApplicationContext
    * dmvp-web
    */
-  private static ApplicationContext ROOT_APPLICATION_CONTEXT;
+  public static ApplicationContext ROOT_APPLICATION_CONTEXT;
 
   @Override
   public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {

@@ -8,7 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.redis.core.StringRedisTemplate;
 
 public class IDGeneratorUtil {
-    private static StringRedisTemplate template = ApplicationContextHelper.getBean(StringRedisTemplate.class);
+    private static StringRedisTemplate template = ApplicationContextHelper.getRootApplication().getBean(StringRedisTemplate.class);
 
     /**
      * 通过Redis获取自增序号
